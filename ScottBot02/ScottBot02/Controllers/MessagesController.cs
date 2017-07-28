@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
+using System.Linq;
+using System;
 
 namespace ScottBot02
 {
@@ -29,7 +31,7 @@ namespace ScottBot02
             return response;
         }
 
-        private Activity HandleSystemMessage(Activity message)
+        private async Task HandleSystemMessage(Activity message)
         {
             if (message.Type == ActivityTypes.DeleteUserData)
             {
@@ -38,6 +40,18 @@ namespace ScottBot02
             }
             else if (message.Type == ActivityTypes.ConversationUpdate)
             {
+
+                if (message.MembersAdded.Any(o => o.Id == message.Recipient.Id))
+                {
+                    ConnectorClient client = new ConnectorClient(new Uri(message.ServiceUrl));
+
+                    var reply = message.CreateReply();
+
+                    //reply.Text = "Welcome to the Bot to showcase the DirectLine API. Send 'Show me a hero card' or 'Send me a BotFramework image' to see how the DirectLine client supports custom channel data. Any other message will be echoed.";
+                    reply.Text = "ConversationUpdate";
+
+                    await client.Conversations.ReplyToActivityAsync(reply);
+                }
                 // Handle conversation state changes, like members being added and removed
                 // Use Activity.MembersAdded and Activity.MembersRemoved and Activity.Action for info
                 // Not available in all channels
@@ -54,8 +68,7 @@ namespace ScottBot02
             else if (message.Type == ActivityTypes.Ping)
             {
             }
-
-            return null;
+            
         }
     }
 }

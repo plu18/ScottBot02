@@ -16,7 +16,11 @@ namespace ScottBot02.Bot
         {
             LUISJson luisResponse;
 
-            string luisUrl = $"https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/a57ad0bb-6568-4d5f-983f-33c6c3346454?subscription-key=3bae4fbe7b7d4f4292f8316ccb95399e&timezoneOffset=0&verbose=true&q={query}";
+            string luisUrl = 
+                $"https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/" +
+                $"a57ad0bb-6568-4d5f-983f-33c6c3346454?" +
+                $"subscription-key=3bae4fbe7b7d4f4292f8316ccb95399e" +
+                $"&timezoneOffset=0&verbose=true&spellCheck=true&q={query}";
 
 
             HttpClient client = new HttpClient();
